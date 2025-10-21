@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Colorful Single Page Website</title>
+
+  <style>
+    /* 🎨 CSS Section */
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(120deg, #ff9a9e, #fad0c4);
+      background-size: 200% 200%;
+      animation: bgShift 10s infinite alternate;
+      color: #fff;
+      text-align: center;
+    }
+
+    @keyframes bgShift {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+
+    nav {
+      background: rgba(255,255,255,0.2);
+      padding: 15px;
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+    }
+
+    nav button {
+      background: white;
+      border: none;
+      color: #333;
+      padding: 10px 20px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+
+    nav button:hover {
+      background: #333;
+      color: #fff;
+    }
+
+    section {
+      display: none;
+      padding: 50px 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    section.active {
+      display: block;
+      animation: fadeIn 0.8s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+      font-size: 3em;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+    }
+
+    p {
+      font-size: 1.2em;
+      line-height: 1.6;
+    }
+
+    footer {
+      margin-top: 40px;
+      padding: 20px;
+      background: rgba(0,0,0,0.3);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 🌸 HTML Section -->
+  <nav>
+    <button onclick="showPage('home')">🏠 Home</button>
+    <button onclick="showPage('about')">💡 About</button>
+    <button onclick="showPage('contact')">📞 Contact</button>
+  </nav>
+
+  <section id="home" class="active">
+    <h1>Welcome to My Colorful Website!</h1>
+    <p>This page is fully made using one HTML file that includes CSS and JavaScript!</p>
+    <p>Use the navigation buttons to switch between pages.</p>
+  </section>
+
+  <section id="about">
+    <h1>About Us</h1>
+    <p>We are a creative group building colorful, interactive, and confusing web challenges 😆</p>
+    <p>This site shows how you can manage multiple virtual pages in one HTML file using JavaScript.</p>
+  </section>
+
+  <section id="contact">
+    <h1>Contact Us</h1>
+    <p>📧 Email: example@mail.com</p>
+    <p>📍 Address: Internet Street, Web City</p>
+    <form onsubmit="return false;">
+      <input type="text" placeholder="Your Name" id="name" style="padding:8px; border-radius:10px; border:none;">
+      <input type="email" placeholder="Your Email" id="email" style="padding:8px; border-radius:10px; border:none;">
+      <button style="background:#fff;color:#333;padding:10px 20px;border:none;border-radius:20px;cursor:pointer;" onclick="sendMessage()">Send Message</button>
+    </form>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 My Colorful Site | Made with ❤️</p>
+  </footer>
+
+  <!-- ⚡ JavaScript Section -->
+  <script>
+    // Function to switch between pages
+    function showPage(pageId) {
+      document.querySelectorAll('section').forEach(section => {
+        section.classList.remove('active');
+      });
+      document.getElementById(pageId).classList.add('active');
+    }
+
+    // Fake send message handler
+    function sendMessage() {
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      if (name && email) {
+        alert(`Thank you, ${name}! We will contact you at ${email}.`);
+      } else {
+        alert('Please fill in all fields.');
+      }
+    }
+  </script>
+
+</body>
+</html>

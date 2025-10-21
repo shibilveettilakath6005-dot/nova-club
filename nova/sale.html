@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BlueEdge Sale Search Portal</title>
+  <style>
+    /* ==== GLOBAL STYLES ==== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: #121212;
+      color: #e0e0e0;
+      overflow-x: hidden;
+    }
+
+    header {
+      background: linear-gradient(90deg, #0d47a1, #1565c0);
+      text-align: center;
+      padding: 25px;
+      font-size: 2em;
+      font-weight: bold;
+      color: white;
+      letter-spacing: 2px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.6);
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      background: #1c1c1c;
+      padding: 15px;
+      gap: 30px;
+      border-bottom: 3px solid #0d47a1;
+    }
+
+    nav button {
+      background: #0d47a1;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    nav button:hover {
+      background: #1976d2;
+      transform: scale(1.05);
+    }
+
+    section {
+      display: none;
+      max-width: 1000px;
+      margin: 60px auto;
+      background: #1e1e1e;
+      border-radius: 10px;
+      padding: 40px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.4);
+      animation: fadeIn 0.6s ease;
+    }
+
+    section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(25px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+      color: #42a5f5;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      font-size: 2em;
+    }
+
+    p {
+      font-size: 1.1em;
+      color: #bbb;
+      line-height: 1.6;
+    }
+
+    .search-box {
+      margin-top: 30px;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .search-box input {
+      padding: 10px;
+      width: 300px;
+      border-radius: 5px;
+      border: none;
+      outline: none;
+      background: #2b2b2b;
+      color: #e0e0e0;
+    }
+
+    .search-box button {
+      background: #42a5f5;
+      color: #121212;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .search-box button:hover {
+      background: #64b5f6;
+      transform: scale(1.05);
+    }
+
+    .results {
+      margin-top: 30px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: #2b2b2b;
+      padding: 20px;
+      border-left: 5px solid #42a5f5;
+      border-radius: 10px;
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 15px rgba(66,165,245,0.4);
+    }
+
+    .price {
+      color: #64b5f6;
+      font-weight: bold;
+      margin-top: 5px;
+      font-size: 1.1em;
+    }
+
+    footer {
+      text-align: center;
+      background: #1c1c1c;
+      color: #aaa;
+      padding: 25px;
+      margin-top: 60px;
+      border-top: 3px solid #1565c0;
+    }
+  </style>
+</head>
+<body>
+
+  <header>🔍 BlueEdge Sale Search Portal</header>
+
+  <nav>
+    <button onclick="showPage('home')">🏠 Home</button>
+    <button onclick="showPage('search')">💼 Search Sales</button>
+    <button onclick="showPage('about')">ℹ️ About</button>
+    <button onclick="showPage('contact')">📞 Contact</button>
+  </nav>
+
+  <!-- === HOME PAGE === -->
+  <section id="home" class="active">
+    <h1>Welcome to BlueEdge</h1>
+    <p>Search and explore top product deals from verified sellers. 
+      Our AI-powered system scans thousands of listings to bring you 
+      the most relevant and best-priced options.</p>
+  </section>
+
+  <!-- === SEARCH PAGE === -->
+  <section id="search">
+    <h1>Search Deals</h1>
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Enter product name...">
+      <button onclick="searchProduct()">Search</button>
+    </div>
+    <div class="results" id="results"></div>
+  </section>
+
+  <!-- === ABOUT PAGE === -->
+  <section id="about">
+    <h1>About Us</h1>
+    <p>BlueEdge is a smart sale-search platform helping users 
+      find the best deals across categories — electronics, fashion, tools, 
+      and more — with trusted listings and verified sellers.</p>
+  </section>
+
+  <!-- === CONTACT PAGE === -->
+  <section id="contact">
+    <h1>Contact Us</h1>
+    <p>Email: support@blueedge.com</p>
+    <p>Phone: +91 9656222297</p>
+  </section>
+
+  <footer>
+    © 2025 BlueEdge Sale Search | Powered by Smart Analytics 💡
+  </footer>
+
+  <script>
+    // === PAGE SWITCHING ===
+    function showPage(id) {
+      document.querySelectorAll('section').forEach(sec => sec.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      window.scrollTo(0, 0);
+    }
+
+    // === SEARCH FUNCTION ===
+    const products = [
+      { name: "Laptop", price: "₹55,000", desc: "14-inch Core i5, 8GB RAM" },
+      { name: "Smartphone", price: "₹22,999", desc: "6.5-inch AMOLED, 5G Ready" },
+      { name: "Bluetooth Speaker", price: "₹2,499", desc: "Powerful Bass Sound" },
+      { name: "Headphones", price: "₹1,999", desc: "Noise Cancelling, Wireless" },
+      { name: "Smartwatch", price: "₹3,499", desc: "Fitness Tracker + Notifications" },
+      { name: "LED TV", price: "₹29,999", desc: "43-inch Smart Display" },
+    ];
+
+    function searchProduct() {
+      const input = document.getElementById("searchInput").value.toLowerCase();
+      const resultsDiv = document.getElementById("results");
+      resultsDiv.innerHTML = "";
+
+      const filtered = products.filter(p => p.name.toLowerCase().includes(input));
+
+      if (filtered.length === 0) {
+        resultsDiv.innerHTML = "<p>No results found.</p>";
+        return;
+      }
+
+      filtered.forEach(p => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `<h3>${p.name}</h3><p>${p.desc}</p><div class="price">${p.price}</div>`;
+        resultsDiv.appendChild(card);
+      });
+    }
+  </script>
+</body>
+</html>
