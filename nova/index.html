@@ -1,0 +1,610 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Nova Club — Creative Collective</title>
+  <meta name="description" content="Nova Club — A polished, complex-looking single-file site demo (HTML/CSS/JS)." />
+  <style>
+    /* =========================
+       Variables & base reset
+       ========================= */
+    :root{
+      --bg1: #0f1724;
+      --bg2: #071025;
+      --glass: rgba(255,255,255,0.06);
+      --accent1: #6ee7b7;
+      --accent2: #7c3aed;
+      --muted: rgba(255,255,255,0.6);
+      --card: rgba(255,255,255,0.03);
+      --glass-2: rgba(255,255,255,0.03);
+      --mono: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:var(--mono);
+      color:#e8eef8;
+      background:
+        radial-gradient(1200px 600px at 10% 20%, rgba(124,58,237,0.08), transparent 8%),
+        radial-gradient(900px 500px at 90% 80%, rgba(110,231,183,0.05), transparent 10%),
+        linear-gradient(180deg,var(--bg1), var(--bg2) 60%);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-y:auto;
+      padding:36px;
+    }
+
+    /* =========================
+       Layout
+       ========================= */
+    .wrap{
+      max-width:1200px;
+      margin:0 auto;
+      display:grid;
+      grid-template-columns: 320px 1fr;
+      gap:28px;
+      align-items:start;
+    }
+
+    /* Sidebar */
+    .sidebar{
+      position:sticky;
+      top:36px;
+      height:calc(100vh - 72px);
+      padding:20px;
+      border-radius:18px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      box-shadow: 0 6px 30px rgba(3,8,15,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      min-width:240px;
+      overflow:auto;
+      backdrop-filter: blur(8px) saturate(1.05);
+    }
+    .brand{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .logo{
+      width:56px;height:56px;border-radius:12px;
+      background:linear-gradient(135deg,var(--accent2),var(--accent1));
+      display:flex;align-items:center;justify-content:center;
+      font-weight:700;font-size:18px;color:#041022;
+      box-shadow: 0 6px 18px rgba(124,58,237,0.18);
+    }
+    .brand h1{margin:0;font-size:15px;letter-spacing:0.2px}
+    .brand p{margin:0;font-size:12px;color:var(--muted)}
+
+    .nav{
+      display:flex;flex-direction:column;gap:8px;margin-top:6px;
+    }
+    .nav a{
+      display:flex;gap:12px;align-items:center;padding:10px;border-radius:10px;
+      color:var(--muted);text-decoration:none;font-size:13px;
+      transition:all .18s ease;
+    }
+    .nav a:hover{background:linear-gradient(90deg, rgba(255,255,255,0.02), transparent); color:#fff; transform:translateX(6px)}
+    .badge{margin-left:auto;font-size:11px;padding:6px 8px;border-radius:999px;background:linear-gradient(90deg,#ffffff06,#ffffff02); color:var(--muted)}
+
+    .profile{
+      margin-top:auto;
+      display:flex;gap:12px;align-items:center;padding-top:8px;border-top:1px solid rgba(255,255,255,0.02);
+    }
+    .avatar{width:46px;height:46px;border-radius:10px;background:linear-gradient(135deg,#fff3,#fff2);display:flex;align-items:center;justify-content:center;color:#041022;font-weight:700}
+    .profile small{display:block;font-size:12px;color:var(--muted)}
+
+    /* Main content */
+    .main{
+      min-height:80vh;
+      display:flex;
+      flex-direction:column;
+      gap:20px;
+    }
+    .hero{
+      position:relative;
+      padding:28px;border-radius:18px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      box-shadow:0 12px 40px rgba(2,6,12,0.6);
+      overflow:hidden;
+      backdrop-filter: blur(8px);
+      display:grid;
+      grid-template-columns: 1fr 340px;
+      gap:20px;
+      align-items:center;
+    }
+    .hero h2{margin:0;font-size:28px;line-height:1.02}
+    .hero p{color:var(--muted);margin:12px 0 18px;font-size:14px}
+    .cta{
+      display:flex;gap:10px;
+    }
+    .btn{
+      padding:12px 16px;border-radius:12px;border:0;font-weight:600;cursor:pointer;
+      background:linear-gradient(90deg,var(--accent1),var(--accent2)); color:#041022;
+      box-shadow: 0 8px 26px rgba(124,58,237,0.16); transition:transform .18s;
+    }
+    .btn.secondary{
+      background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.04);
+      box-shadow:none;
+    }
+    .btn:active{transform:translateY(2px)}
+
+    .hero-visual{
+      padding:18px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+      display:flex;flex-direction:column;gap:12px;align-items:stretch;
+    }
+
+    /* Complex grid of cards */
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(3,1fr);
+      gap:18px;
+      margin-top:8px;
+    }
+    .card{
+      padding:14px;border-radius:12px;background:var(--card);backdrop-filter: blur(6px);
+      box-shadow: 0 6px 18px rgba(2,6,12,0.5); min-height:110px;
+      transition:transform .18s ease, box-shadow .18s;
+    }
+    .card:hover{transform:translateY(-6px); box-shadow: 0 18px 48px rgba(2,6,12,0.6)}
+    .card h3{margin:0;font-size:13px}
+    .stat{font-size:26px;font-weight:700;margin-top:8px}
+
+    /* Services / features complex list */
+    .features{
+      display:grid;grid-template-columns: 1fr 1fr; gap:18px;
+    }
+    .feature{
+      padding:18px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+      display:flex;gap:14px;align-items:flex-start;
+    }
+    .feature svg{flex:0 0 46px;border-radius:8px;padding:10px;background:linear-gradient(135deg,var(--accent2),var(--accent1)); color:#041022}
+    .feature p{margin:0;color:var(--muted);font-size:14px}
+
+    /* Team section */
+    .team{
+      display:flex;gap:12px;align-items:center;
+    }
+    .member{
+      flex:1;padding:12px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      display:flex;gap:12px;align-items:center;
+    }
+    .member .m-avatar{width:56px;height:56px;border-radius:10px;background:linear-gradient(135deg,#fff3,#fff2);display:flex;align-items:center;justify-content:center;color:#041022;font-weight:700}
+
+    /* Footer form & modal */
+    .contact{
+      margin-top:10px;padding:16px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+      display:flex;gap:12px;align-items:center;
+    }
+    .contact input, .contact textarea{flex:1;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:inherit}
+    .contact textarea{resize:vertical;min-height:70px}
+
+    /* small utilities */
+    .muted{color:var(--muted);font-size:13px}
+    .pill{display:inline-block;padding:8px 10px;border-radius:999px;background:linear-gradient(90deg, rgba(255,255,255,0.02), transparent);font-size:12px}
+
+    /* responsive */
+    @media (max-width:980px){
+      .wrap{grid-template-columns:1fr; padding:18px}
+      .sidebar{position:relative;height:auto;order:2}
+      .hero{grid-template-columns:1fr; padding:20px}
+      .grid{grid-template-columns:repeat(2,1fr)}
+    }
+    @media (max-width:560px){
+      .grid{grid-template-columns:1fr}
+      .features{grid-template-columns:1fr}
+      .team{flex-direction:column}
+    }
+
+    /* small animated decorative element */
+    .orbit{
+      position:absolute;right:-80px;top:-60px;width:360px;height:360px;border-radius:50%;
+      background:conic-gradient(from 120deg at 50% 50%, rgba(124,58,237,0.06), rgba(110,231,183,0.04));
+      filter:blur(30px);transform:rotate(18deg);opacity:0.9;
+      pointer-events:none;
+      animation:spin 12s linear infinite;
+    }
+    @keyframes spin{to{transform:rotate(378deg)}}
+
+    /* tiny code look */
+    pre{background:#041025;padding:12px;border-radius:10px;font-size:12px;color:#a6c7ff;overflow:auto}
+    .mini-graph{height:64px;border-radius:8px;background:linear-gradient(90deg,#ffffff03,#ffffff01); display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px}
+
+    /* modal */
+    .modal{
+      position:fixed;left:0;top:0;width:100%;height:100%;display:none;align-items:center;justify-content:center;
+      backdrop-filter: blur(6px);
+    }
+    .modal.show{display:flex}
+    .modal .panel{width:720px;max-width:96%;padding:20px;border-radius:14px;background:linear-gradient(180deg,#041022, #061026);box-shadow:0 20px 60px rgba(3,8,15,0.8)}
+    .close-btn{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:8px 10px;border-radius:8px;color:var(--muted);cursor:pointer}
+
+  </style>
+</head>
+<body>
+  <div class="wrap" id="app">
+    <!-- SIDEBAR -->
+    <aside class="sidebar" aria-label="Sidebar Navigation">
+      <div class="brand">
+        <div class="logo">NC</div>
+        <div>
+          <h1>Nova Club</h1>
+          <p>Creative Collective</p>
+        </div>
+      </div>
+
+      <nav class="nav" aria-label="Main navigation">
+        <a href="#overview">Overview <span class="badge">pro</span></a>
+        <a href="#features">Services</a>
+        <a href="#team">Team</a>
+        <a href="#stats">Analytics</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <div class="pill">Members • 128</div>
+
+      <div class="muted" style="margin-top:6px">
+        <strong>Next meetup</strong><br>
+        Oct 25, 2025 — <span class="pill">Design sprint</span>
+      </div>
+
+      <div class="profile">
+        <div class="avatar">SK</div>
+        <div>
+          <strong>Shibil Kar</strong>
+          <small class="muted">Founder • shibil@novaclub.example</small>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+      <section class="hero" id="overview">
+        <div>
+          <h2>We design systems. We build moments.</h2>
+          <p>Nova Club is a boutique creative club specializing in product design, motion, branding, and immersive experiences. Our site intentionally layers effects, interactions, and micro-UI to showcase depth and capability.</p>
+
+          <div class="cta">
+            <button class="btn" id="openJoin">Join club</button>
+            <button class="btn secondary" id="openPitch">Request pitch</button>
+          </div>
+
+          <div style="margin-top:18px; display:flex; gap:12px;">
+            <div class="mini-graph card" style="flex:1">
+              <div style="text-align:left"><small class="muted">Active projects</small><div class="stat" id="counter-projects">0</div></div>
+            </div>
+            <div class="mini-graph card" style="width:160px">
+              <small class="muted">Uptime</small><div class="stat" id="counter-uptime">0</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual" aria-hidden="true">
+          <div style="display:flex;gap:10px;align-items:center;">
+            <div style="flex:1">
+              <div class="pill">Featured</div>
+              <h3 style="margin:8px 0 0">Project Aurora</h3>
+              <p class="muted" style="margin:6px 0 0;font-size:13px">Generative brand system for immersive retail.</p>
+            </div>
+            <div style="width:72px">
+              <svg width="72" height="72" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="64" height="64" rx="12" fill="url(#g)"/>
+                <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#6ee7b7"/><stop offset="1" stop-color="#7c3aed"/></linearGradient></defs>
+              </svg>
+            </div>
+          </div>
+
+          <div class="grid" style="margin-top:10px">
+            <div class="card">
+              <h3>Design Ops</h3>
+              <div class="muted">Streamlined systems, design tokens, orchestration</div>
+            </div>
+            <div class="card">
+              <h3>Motion Lab</h3>
+              <div class="muted">Procedural animation and micro-interaction design</div>
+            </div>
+            <div class="card">
+              <h3>Brand Engine</h3>
+              <div class="muted">Adaptive identity systems for web & space</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="orbit" aria-hidden="true"></div>
+      </section>
+
+      <section id="features">
+        <h3 style="margin-bottom:12px">Capabilities</h3>
+        <div class="features">
+          <div class="feature">
+            <svg width="46" height="46" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <rect x="0" y="0" width="24" height="24" rx="5" fill="white" opacity="0.12"/>
+              <path d="M4 12h16" stroke="#041022" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <div>
+              <strong>Strategic Design</strong>
+              <p>Research-led frameworks, roadmaps, and rapid prototyping for validated design choices.</p>
+            </div>
+          </div>
+
+          <div class="feature">
+            <svg width="46" height="46" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <rect width="24" height="24" rx="5" fill="white" opacity="0.12"/>
+              <path d="M6 6l12 12M6 18L18 6" stroke="#041022" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <div>
+              <strong>Interactive Prototypes</strong>
+              <p>High-fidelity interactions and transitions to sell the product vision faster.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="stats" style="margin-top:12px">
+        <h3 style="margin-bottom:12px">Analytics • Status</h3>
+        <div style="display:grid;grid-template-columns:2fr 1fr;gap:18px;align-items:start">
+          <div style="padding:12px;border-radius:12px;background:var(--glass-2);backdrop-filter: blur(6px);">
+            <div style="display:flex;gap:18px;align-items:center;justify-content:space-between">
+              <div>
+                <h4 style="margin:0">Performance</h4>
+                <p class="muted" style="margin:6px 0 0">Real-time simulated metrics and a tiny waveform.</p>
+              </div>
+              <div>
+                <div class="pill">Latency <strong style="margin-left:8px">31ms</strong></div>
+              </div>
+            </div>
+            <div style="margin-top:10px;display:flex;gap:12px;align-items:center">
+              <div style="flex:1;height:120px;border-radius:10px;padding:12px;background:#04102a">
+                <canvas id="wave" width="600" height="120" style="width:100%;height:100%;display:block;border-radius:8px"></canvas>
+              </div>
+              <div style="width:180px;display:flex;flex-direction:column;gap:8px">
+                <div class="card" style="padding:12px">
+                  <div class="muted">Conversion</div>
+                  <div class="stat" id="counter-conv">0%</div>
+                </div>
+                <div class="card" style="padding:12px">
+                  <div class="muted">Retention</div>
+                  <div class="stat" id="counter-ret">0%</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <aside style="display:flex;flex-direction:column;gap:12px">
+            <div class="card">
+              <div class="muted">Active users</div>
+              <div class="stat" id="counter-users">0</div>
+            </div>
+            <div class="card">
+              <div class="muted">Server load</div>
+              <div class="stat" id="counter-load">0%</div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="team" style="margin-top:12px">
+        <h3 style="margin-bottom:12px">Core team</h3>
+        <div class="team">
+          <div class="member">
+            <div class="m-avatar">SK</div>
+            <div>
+              <strong>Shibil Kar</strong>
+              <div class="muted">Founder & Lead Designer</div>
+            </div>
+          </div>
+          <div class="member">
+            <div class="m-avatar">AM</div>
+            <div>
+              <strong>Aditi Mehra</strong>
+              <div class="muted">Motion & Frontend</div>
+            </div>
+          </div>
+          <div class="member">
+            <div class="m-avatar">RL</div>
+            <div>
+              <strong>R. Laxman</strong>
+              <div class="muted">Systems & Back-end</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact">
+        <h3 style="margin-bottom:12px">Get in touch</h3>
+        <div class="contact">
+          <input type="text" id="name" placeholder="Your name" />
+          <input type="email" id="email" placeholder="your@email.example" />
+          <button class="btn" id="send">Send</button>
+        </div>
+        <div style="margin-top:10px" class="muted">Or email us directly at <strong>hello@novaclub.example</strong></div>
+      </section>
+
+      <footer style="margin-top:16px;text-align:center;color:var(--muted)">
+        <small>© Nova Club — Crafted with care. This is a single-file demo for presentation purposes.</small>
+      </footer>
+    </main>
+  </div>
+
+  <!-- Modal join -->
+  <div class="modal" id="modal">
+    <div class="panel">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <h3 style="margin:0">Join Nova Club</h3>
+          <small class="muted">Tell us a bit about your interest</small>
+        </div>
+        <button class="close-btn" id="closeModal">Close</button>
+      </div>
+
+      <form id="joinForm" style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <input name="fullname" placeholder="Full name" required style="padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:inherit" />
+        <input name="email" type="email" placeholder="Email" required style="padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:inherit" />
+        <textarea name="about" placeholder="Tell us about your project" style="grid-column: 1 / -1;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:inherit"></textarea>
+        <div style="grid-column:1 / -1;display:flex;gap:8px;justify-content:flex-end">
+          <button type="button" class="close-btn" id="cancelJoin">Cancel</button>
+          <button class="btn" type="submit">Apply</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    /*
+      Interactive JS:
+      - counters
+      - modal controls
+      - contact validation (basic)
+      - tiny waveform canvas animation
+    */
+
+    // ---------- Helpers ----------
+    function animateCounter(el, from, to, duration=1200, suffix='') {
+      const start = performance.now();
+      function tick(now){
+        const t = Math.min(1, (now - start) / duration);
+        const val = Math.floor(from + (to - from) * (1 - Math.pow(1 - t, 3))); // easeOutCubic-ish
+        el.textContent = val + suffix;
+        if (t < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }
+
+    // ---------- Initial counters ----------
+    document.addEventListener('DOMContentLoaded', () => {
+      animateCounter(document.getElementById('counter-projects'), 0, 42, 1400);
+      animateCounter(document.getElementById('counter-uptime'), 0, 99, 1600, '%');
+      animateCounter(document.getElementById('counter-users'), 0, 1274, 1300);
+      animateCounter(document.getElementById('counter-conv'), 0, 18, 1200, '%');
+      animateCounter(document.getElementById('counter-ret'), 0, 72, 1100, '%');
+      animateCounter(document.getElementById('counter-load'), 0, 12, 1500, '%');
+    });
+
+    // ---------- Modal logic ----------
+    const modal = document.getElementById('modal');
+    document.getElementById('openJoin').addEventListener('click', () => modal.classList.add('show'));
+    document.getElementById('openPitch').addEventListener('click', () => modal.classList.add('show'));
+    document.getElementById('closeModal').addEventListener('click', ()=> modal.classList.remove('show'));
+    document.getElementById('cancelJoin').addEventListener('click', ()=> modal.classList.remove('show'));
+    document.getElementById('joinForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      // simulate submission
+      const btn = e.target.querySelector('button[type="submit"]');
+      btn.disabled = true;
+      btn.textContent = 'Sending...';
+      setTimeout(() => {
+        btn.disabled = false;
+        btn.textContent = 'Apply';
+        modal.classList.remove('show');
+        alert('Thanks! Application received — we will get back to you.');
+      }, 900);
+    });
+
+    // ---------- Contact validation ----------
+    document.getElementById('send').addEventListener('click', () => {
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      if (!name || !email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        alert('Please provide a valid name and email.');
+        return;
+      }
+      // micro-feedback
+      const original = document.getElementById('send').textContent;
+      document.getElementById('send').textContent = 'Sending...';
+      setTimeout(()=> {
+        document.getElementById('send').textContent = 'Sent ✓';
+        setTimeout(()=> document.getElementById('send').textContent = original, 1400);
+      }, 700);
+    });
+
+    // ---------- tiny waveform canvas (animated) ----------
+    (function(){
+      const c = document.getElementById('wave');
+      if (!c) return;
+      const ctx = c.getContext('2d');
+      let w = c.width = c.clientWidth * devicePixelRatio;
+      let h = c.height = c.clientHeight * devicePixelRatio;
+      ctx.scale(devicePixelRatio, devicePixelRatio);
+
+      function resize(){
+        w = c.width = c.clientWidth * devicePixelRatio;
+        h = c.height = c.clientHeight * devicePixelRatio;
+        ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+      }
+      window.addEventListener('resize', resize);
+
+      const waves = [
+        {amp:18, freq:0.008, speed:0.9, phase:0},
+        {amp:8, freq:0.016, speed:1.2, phase:1.2},
+        {amp:5, freq:0.03, speed:1.8, phase:0.4}
+      ];
+      let t0 = performance.now();
+
+      function draw(now){
+        const t = (now - t0) * 0.002;
+        ctx.clearRect(0,0,c.clientWidth,c.clientHeight);
+        // bg
+        ctx.fillStyle = '#041022';
+        ctx.fillRect(0,0,c.clientWidth,c.clientHeight);
+
+        for(let i=0;i<waves.length;i++){
+          const wv = waves[i];
+          ctx.beginPath();
+          const yMid = c.clientHeight/2;
+          for(let x=0;x<=c.clientWidth;x+=2){
+            const y = yMid + Math.sin((x*wv.freq) + (t*wv.speed) + wv.phase) * wv.amp * (1 + 0.2*Math.sin(t*1.3 + i));
+            if (x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+          }
+          ctx.strokeStyle = `rgba(174,200,255, ${0.14 + i*0.08})`;
+          ctx.lineWidth = 1.6 - i*0.4;
+          ctx.stroke();
+        }
+        requestAnimationFrame(draw);
+      }
+      requestAnimationFrame(draw);
+    })();
+
+    // ---------- small periodic micro-updates (simulate live metrics) ----------
+    (function(){
+      function pick(min,max){ return Math.floor(Math.random()*(max-min+1))+min }
+      setInterval(() => {
+        // random small updates to counters
+        const usersEl = document.getElementById('counter-users');
+        const loadEl = document.getElementById('counter-load');
+        const convEl = document.getElementById('counter-conv');
+
+        if (usersEl) {
+          const cur = parseInt(usersEl.textContent) || 100;
+          animateCounter(usersEl, cur, cur + pick(1,9), 700);
+        }
+        if (loadEl) {
+          const cur = parseInt(loadEl.textContent) || 1;
+          animateCounter(loadEl, cur, Math.min(99, Math.max(1, cur + pick(-2,5))), 900, '%');
+        }
+        if (convEl) {
+          const cur = parseInt(convEl.textContent) || 0;
+          animateCounter(convEl, cur, Math.min(99, cur + pick(0,1)), 1000, '%');
+        }
+      }, 2400);
+    })();
+
+    // small accessibility: allow closing modal with escape
+    document.addEventListener('keydown', (e)=>{
+      if (e.key === 'Escape') modal.classList.remove('show');
+    });
+
+    // ensure links in nav scroll smoothly
+    document.querySelectorAll('.nav a').forEach(a=>{
+      a.addEventListener('click', (ev)=>{
+        ev.preventDefault();
+        const id = a.getAttribute('href').slice(1);
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Portal</title>
+  <style>
+    /* === RESET & BASE === */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(120deg, #e3f2fd, #bbdefb);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .login-container {
+      background: white;
+      width: 350px;
+      padding: 40px 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .login-container:hover {
+      box-shadow: 0 0 25px rgba(25,118,210,0.4);
+    }
+
+    h1 {
+      color: #1565c0;
+      margin-bottom: 10px;
+    }
+
+    p.subtitle {
+      color: #757575;
+      font-size: 0.95em;
+      margin-bottom: 25px;
+    }
+
+    .input-group {
+      text-align: left;
+      margin-bottom: 18px;
+    }
+
+    .input-group label {
+      display: block;
+      font-weight: 600;
+      color: #1976d2;
+      margin-bottom: 5px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #bbdefb;
+      border-radius: 8px;
+      font-size: 1em;
+      color: #333;
+      outline: none;
+      transition: 0.3s;
+    }
+
+    .input-group input:focus {
+      border-color: #1976d2;
+      box-shadow: 0 0 6px rgba(25,118,210,0.4);
+    }
+
+    .btn-login {
+      width: 100%;
+      background: #1976d2;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 1em;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn-login:hover {
+      background: #1565c0;
+      transform: scale(1.03);
+    }
+
+    .extra-links {
+      margin-top: 15px;
+      font-size: 0.9em;
+    }
+
+    .extra-links a {
+      color: #1976d2;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .extra-links a:hover {
+      text-decoration: underline;
+    }
+
+    .message {
+      margin-top: 20px;
+      color: #1565c0;
+      font-weight: 600;
+      display: none;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+    <h1> Login</h1>
+    <p class="subtitle">Welcome back! Please sign in to continue.</p>
+
+    <div class="input-group">
+      <label for="username">Username</label>
+      <input type="text" id="username" placeholder="Enter your username">
+    </div>
+
+    <div class="input-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="Enter your password">
+    </div>
+
+    <button class="btn-login" onclick="login()">Login</button>
+
+    <div class="extra-links">
+      <p><a href="#">Forgot Password?</a> | <a href="#">Create Account</a></p>
+    </div>
+
+    <div class="message" id="message"></div>
+  </div>
+
+  <script>
+    function login() {
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const message = document.getElementById("message");
+
+      if (!username || !password) {
+        message.style.display = "block";
+        message.style.color = "red";
+        message.textContent = "⚠️ Please enter both username and password.";
+        return;
+      }
+
+      // Example validation (for demo)
+      if (username === "admin" && password === "12345") {
+        message.style.display = "block";
+        message.style.color = "green";
+        message.textContent = `✅ Login successful! Welcome, ${username}.`;
+      } else {
+        message.style.display = "block";
+        message.style.color = "red";
+        message.textContent = "❌ Invalid username or password.";
+      }
+    }
+  </script>
+
+</body>
+</html>

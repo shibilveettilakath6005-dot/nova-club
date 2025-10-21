@@ -1,0 +1,17 @@
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #f0f0f0, #d0d0ff);
+    color: #333;
+}
+h1 {
+    text-align: center;
+    color: darkblue;
+}
+ul li a {
+    text-decoration: none;
+    color: darkred;
+}
+ul li a:hover {
+    color: darkgreen;
+    font-weight: bold;
+}
